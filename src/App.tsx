@@ -6,6 +6,18 @@ function App() {
   const [name, setName] = useState("");
   const [dietary, setDietary] = useState("");
 
+  const handleSubmit = () => {
+    if (count <= 0 || name === "") {
+      alert("Täytä nimi ja henkilömäärä.");
+      return;
+    }
+    console.log(`Nimi: ${name}, Osallistujien määrä: ${count}, Erityisruokavaliot: ${dietary}`);
+    alert(`Kiitos ${name}! Tavataan juhlassa!`);
+    // Here you can also handle the dietary preferences if needed
+  };
+
+
+
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-[#008080] ">
@@ -106,11 +118,13 @@ function App() {
                   <button
                     disabled={ count <= 0 || name === "" }
                     type="button"
+                    onClick={handleSubmit}
+                    aria-label="Ilmoittaudu"
                     className="flex items-center justify-center px-2 bg-[#cac6cb] border border-white border-b-black border-r-black hover:cursor-pointer"
                   >
                     Ilmoittaudu!
                   </button>
-                  <span className="text-[#a099a1]">.</span>
+                  <span className="text-[#a099a1]"></span>
                 </div>
               </div>
             </div>
