@@ -1,6 +1,7 @@
+
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = 'https://okhmiydbagubyoeheoso.supabase.co'
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://okhmiydbagubyoeheoso.supabase.co';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseKey) {
@@ -20,6 +21,23 @@ export const useDatabase = () => {
     diets?: string;
   }
 
+  // AUTH
+  const getUser = async () => {
+    const { data } = await supabase.auth.getUser();
+    return data.user;
+  };
+
+  const signIn = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data.user;
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+  };
+
+  // DATA
   const addItem = async (table: string, item: GuestItem) => {
     const { data, error } = await supabase.from(table).insert([item]);
     if (error) {
@@ -27,7 +45,7 @@ export const useDatabase = () => {
     }
     return data;
   };
-  // Function to get all items from a specified table
+
   const getItems = async (table: string) => {
     const { data, error } = await supabase.from(table).select('*');
     if (error) {
@@ -37,8 +55,10 @@ export const useDatabase = () => {
   };
 
   return {
-    supabase,
     addItem,
     getItems,
+    getUser,
+    signIn,
+    signOut,
   };
 };
