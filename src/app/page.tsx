@@ -12,6 +12,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [nameForSuccess, setNameForSuccess] = useState("");
   const { addItem } = useDatabase();
   const searchParams = useSearchParams();
 
@@ -33,11 +34,12 @@ export default function Home() {
     setError(null);
     setSuccess(false);
     try {
-      await addItem("guests", {
+      await addItem("quests", {
         name,
         number_of_quests: count,
         diets: dietary,
       });
+      setNameForSuccess(name); // store name for success message
       setSuccess(true);
       setName("");
       setCount(0);
@@ -131,40 +133,45 @@ export default function Home() {
                       Kalevankatu 3, 2. kerros, 60100 Seinäjoki
                     </span>
                   </p>
-                  <p className="border-t">
-                    <input
-                      type="text"
-                      placeholder="Nimi*"
-                      className="w-full windows95-input"
-                      onChange={(e) => setName(e.target.value)}
-                      value={name}
-                    />
-                    <input
-                      type="number"
-                      placeholder="Osallistujien määrä*"
-                      className="w-full mt-1 windows95-input"
-                      onChange={(e) => setCount(Number(e.target.value))}
-                      value={count === 0 ? "" : count}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Erityisruokavaliot"
-                      className="w-full mt-1 windows95-input"
-                      onChange={(e) => setDietary(e.target.value)}
-                      value={dietary}
-                    />
-                  </p>
-                  <button
-                    disabled={count <= 0 || name === "" || loading}
-                    type="button"
-                    onClick={handleSubmit}
-                    aria-label="Ilmoittaudu"
-                    className="flex items-center justify-center px-2 bg-[#cac6cb] border border-white border-b-black border-r-black hover:cursor-pointer"
-                  >
-                    {loading ? "Tallennetaan..." : "Ilmoittaudu!"}
-                  </button>
-                  {error && <span className="text-red-600">{error}</span>}
-                  {success && <span className="text-green-600">Kiitos {name || "vieras"}! Tavataan juhlassa!</span>}
+                  {success ? (
+                    <span className="text-green-600 text-lg py-8">Kiitos {nameForSuccess}! Tavataan juhlassa!</span>
+                  ) : (
+                    <>
+                      <p className="border-t">
+                        <input
+                          type="text"
+                          placeholder="Nimi*"
+                          className="w-full windows95-input"
+                          onChange={(e) => setName(e.target.value)}
+                          value={name}
+                        />
+                        <input
+                          type="number"
+                          placeholder="Osallistujien määrä*"
+                          className="w-full mt-1 windows95-input"
+                          onChange={(e) => setCount(Number(e.target.value))}
+                          value={count === 0 ? "" : count}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Erityisruokavaliot"
+                          className="w-full mt-1 windows95-input"
+                          onChange={(e) => setDietary(e.target.value)}
+                          value={dietary}
+                        />
+                      </p>
+                      <button
+                        disabled={count <= 0 || name === "" || loading}
+                        type="button"
+                        onClick={handleSubmit}
+                        aria-label="Ilmoittaudu"
+                        className="flex items-center justify-center px-2 bg-[#cac6cb] border border-white border-b-black border-r-black hover:cursor-pointer"
+                      >
+                        {loading ? "Tallennetaan..." : "Ilmoittaudu!"}
+                      </button>
+                      {error && <span className="text-red-600">{error}</span>}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
