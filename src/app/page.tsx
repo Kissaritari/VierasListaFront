@@ -120,7 +120,7 @@ export default function Home() {
             </div>
             <div className="space-y-0.5 bg-[#808080]">
               <div className=" bg-[#cac6cb] ">
-                <div className="flex flex-col mt-2 space-y-3 mx-2">
+                <div className="flex flex-col mt-2 space-y-3 mx-2 pb-2">
                   <h2 className="font-bold text-lg border-b">
                     Tervetuloa Sakun valmistujaisiin!
                   </h2>
@@ -132,7 +132,16 @@ export default function Home() {
                     <span className="font-semibold">
                       Kalevankatu 3, 2. kerros, 60100 Seinäjoki
                     </span>
+                    
                   </p>
+                  <p>
+                    Ilmoittaudu mukaan juhlaan alla olevalla lomakkeella. Ilmoittautumisaika päättyy{" "}
+                    <span className="font-semibold"> 21.07 </span>.
+                  </p>
+                    Mahdolliset muistamiset mobilepaylla:{" "}
+                    <span className="font-semibold"> 045 1276653 </span>
+                    tai tilisiirrolla:{" "}
+                    <span className="font-semibold"> FI82 4108 0010 4061 33 </span> 
                   {success ? (
                     <span className="text-green-600 text-lg py-8">Kiitos {nameForSuccess}! Tavataan juhlassa!</span>
                   ) : (
