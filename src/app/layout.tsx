@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Juhlakutus",
+  title: "Juhlakutsu",
   description: "Juhlakutsu",
 };
 
