@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+
+import { useState, Suspense } from "react";
 import { useDatabase } from "../hooks/useDatabase";
 import { useSearchParams } from "next/navigation";
 
-
-export default function Home() {
+function HomeContent() {
   const [count, setCount] = useState(0);
   const [name, setName] = useState("");
   const [dietary, setDietary] = useState("");
@@ -138,9 +138,9 @@ export default function Home() {
                     Ilmoittaudu mukaan juhlaan alla olevalla lomakkeella. Ilmoittautumisaika päättyy{" "}
                     <span className="font-semibold"> 21.07 </span>.
                   </p>
-                    Mahdolliset muistamiset mobilepaylla:{" "}
+                    Mahdolliset muistamiset mobilepaylla: {" "}
                     <span className="font-semibold"> 045 1276653 </span>
-                    tai tilisiirrolla:{" "}
+                    tai tilisiirrolla: {" "}
                     <span className="font-semibold"> FI82 4108 0010 4061 33 </span> 
                   {success ? (
                     <span className="text-green-600 text-lg py-8">Kiitos {nameForSuccess}! Tavataan juhlassa!</span>
@@ -191,3 +191,11 @@ export default function Home() {
   );
 }
 
+export default function Home() {
+  return (
+    <Suspense>
+      <HomeContent />
+    </Suspense>
+  );
+}
+ 
