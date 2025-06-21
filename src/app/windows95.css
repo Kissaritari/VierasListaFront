@@ -1,0 +1,20 @@
+.windows95-input {
+  font-family: 'MS Sans Serif', Tahoma, sans-serif;
+  font-size: 13px;
+  color: black;
+  background-color: white;
+  padding: 2px 4px;
+  border: 2px solid;
+  border-color: #fff #7b7b7b #7b7b7b #fff; /* top right bottom left */
+  outline: none;
+
+  /* Classic inset bevel */
+  box-shadow:
+    inset -1px -1px 0 #bdbdbd,   /* top-left inner shadow */
+    inset 1px 1px 0 #fff;        /* bottom-right inner highlight */
+}
+
+.windows95-input:focus {
+  border-color: #000080;
+  box-shadow: none;
+}

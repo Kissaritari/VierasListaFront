@@ -1,23 +1,32 @@
-import { useState } from "react";
-import "./App.css";
+"use client";
 
-function App() {
+import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+
+export default function Home() {
   const [count, setCount] = useState(0);
   const [name, setName] = useState("");
   const [dietary, setDietary] = useState("");
+  const searchParams = useSearchParams();
 
+  const search = searchParams.get("salasana");
+  if (search !== "kissa") {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#008080]">
+        <h1 className="text-white animate-pulse duration-200 font-bold text-3xl">Salasana väärin!</h1>
+      </div>
+    );
+  }
   const handleSubmit = () => {
     if (count <= 0 || name === "") {
       alert("Täytä nimi ja henkilömäärä.");
       return;
     }
-    console.log(`Nimi: ${name}, Osallistujien määrä: ${count}, Erityisruokavaliot: ${dietary}`);
+    console.log(
+      `Nimi: ${name}, Osallistujien määrä: ${count}, Erityisruokavaliot: ${dietary}`
+    );
     alert(`Kiitos ${name}! Tavataan juhlassa!`);
-    // Here you can also handle the dietary preferences if needed
   };
-
-
-
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-[#008080] ">
@@ -33,7 +42,7 @@ function App() {
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
-                    stroke-width="0"
+                    strokeWidth="0"
                     viewBox="0 0 512 512"
                     xmlns="http://www.w3.org/2000/svg"
                   >
@@ -47,7 +56,7 @@ function App() {
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
-                    stroke-width="0"
+                    strokeWidth="0"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
@@ -61,14 +70,14 @@ function App() {
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
-                    stroke-width="0"
+                    strokeWidth="0"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       fill="none"
                       stroke="#000"
-                      stroke-width="2"
+                      strokeWidth="2"
                       d="M7,7 L17,17 M7,17 L17,7"
                     ></path>
                   </svg>
@@ -85,9 +94,11 @@ function App() {
             <div className="space-y-0.5 bg-[#808080]">
               <div className=" bg-[#cac6cb] ">
                 <div className="flex flex-col mt-2 space-y-3 mx-2">
-                  <h2 className="font-bold text-lg border-b">Tervetuloa Sakun valmistujaisiin!</h2>
+                  <h2 className="font-bold text-lg border-b">
+                    Tervetuloa Sakun valmistujaisiin!
+                  </h2>
                   <p>
-                    <span className="font-semibold"> 26.07 </span> klo 3pm alkaen
+                    <span className="font-semibold"> 26.07 </span> klo 15 alkaen
                   </p>
                   <p>
                     osoitteessa{" "}
@@ -99,24 +110,24 @@ function App() {
                     <input
                       type="text"
                       placeholder="Nimi*"
-                      className="w-full win95-input"
+                      className="w-full windows95-input"
                       onChange={(e) => setName(e.target.value)}
                     />
                     <input
                       type="number"
                       placeholder="Osallistujien määrä*"
-                      className="w-full win95-input mt-1"
+                      className="w-full mt-1 windows95-input"
                       onChange={(e) => setCount(Number(e.target.value))}
                     />
                     <input
                       type="text"
                       placeholder="Erityisruokavaliot"
-                      className="w-full win95-input mt-1"
+                      className="w-full mt-1 windows95-input"
                       onChange={(e) => setDietary(e.target.value)}
                     />
                   </p>
                   <button
-                    disabled={ count <= 0 || name === "" }
+                    disabled={count <= 0 || name === ""}
                     type="button"
                     onClick={handleSubmit}
                     aria-label="Ilmoittaudu"
@@ -134,5 +145,3 @@ function App() {
     </>
   );
 }
-
-export default App;
