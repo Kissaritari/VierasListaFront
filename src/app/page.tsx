@@ -1,12 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useDatabase } from "../hooks/useDatabase";
 import { useSearchParams } from "next/navigation";
+
 
 export default function Home() {
   const [count, setCount] = useState(0);
   const [name, setName] = useState("");
   const [dietary, setDietary] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const { addItem } = useDatabase();
   const searchParams = useSearchParams();
 
   const search = searchParams.get("salasana");
@@ -17,15 +23,30 @@ export default function Home() {
       </div>
     );
   }
-  const handleSubmit = () => {
+
+  const handleSubmit = async () => {
     if (count <= 0 || name === "") {
       alert("Täytä nimi ja henkilömäärä.");
       return;
     }
-    console.log(
-      `Nimi: ${name}, Osallistujien määrä: ${count}, Erityisruokavaliot: ${dietary}`
-    );
-    alert(`Kiitos ${name}! Tavataan juhlassa!`);
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+    try {
+      await addItem("guests", {
+        name,
+        number_of_quests: count,
+        diets: dietary,
+      });
+      setSuccess(true);
+      setName("");
+      setCount(0);
+      setDietary("");
+    } catch (err: any) {
+      setError(err.message || "Virhe tallennuksessa");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -112,30 +133,34 @@ export default function Home() {
                       placeholder="Nimi*"
                       className="w-full windows95-input"
                       onChange={(e) => setName(e.target.value)}
+                      value={name}
                     />
                     <input
                       type="number"
                       placeholder="Osallistujien määrä*"
                       className="w-full mt-1 windows95-input"
                       onChange={(e) => setCount(Number(e.target.value))}
+                      value={count === 0 ? "" : count}
                     />
                     <input
                       type="text"
                       placeholder="Erityisruokavaliot"
                       className="w-full mt-1 windows95-input"
                       onChange={(e) => setDietary(e.target.value)}
+                      value={dietary}
                     />
                   </p>
                   <button
-                    disabled={count <= 0 || name === ""}
+                    disabled={count <= 0 || name === "" || loading}
                     type="button"
                     onClick={handleSubmit}
                     aria-label="Ilmoittaudu"
                     className="flex items-center justify-center px-2 bg-[#cac6cb] border border-white border-b-black border-r-black hover:cursor-pointer"
                   >
-                    Ilmoittaudu!
+                    {loading ? "Tallennetaan..." : "Ilmoittaudu!"}
                   </button>
-                  <span className="text-[#a099a1]"></span>
+                  {error && <span className="text-red-600">{error}</span>}
+                  {success && <span className="text-green-600">Kiitos {name || "vieras"}! Tavataan juhlassa!</span>}
                 </div>
               </div>
             </div>
@@ -145,3 +170,4 @@ export default function Home() {
     </>
   );
 }
+

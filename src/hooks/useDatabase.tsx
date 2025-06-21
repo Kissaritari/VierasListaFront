@@ -1,15 +1,26 @@
+import { createClient } from "@supabase/supabase-js";
 
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = 'https://okhmiydbagubyoeheoso.supabase.co'
-const supabaseKey = process.env.SUPABASE_ANON_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
-const data = await fetch('https://okhmiydbagubyoeheoso.supabase.co/rest/v1/countries', {
-  headers: {
-    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9raG1peWRiYWd1YnlvZWhlb3NvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwOTUzOTQsImV4cCI6MjA2NTY3MTM5NH0.gVmI18E_s6pGBtsXpNAFGEcDb02c7XgLtoENWqn4CrY'
+export const useDatabase = () => {
+  const supabaseUrl = "https://okhmiydbagubyoeheoso.supabase.co";
+  const supabaseKey = process.env.SUPABASE_ANON_KEY;
+  if (!supabaseKey) {
+    throw new Error(
+      "Supabase key is not defined. Please set the SUPABASE_KEY environment variable."
+    );
   }
-})
-  .then(res => res.json())
-  .catch(error => {
-    // Handle error
-  });
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  // Function to add an item to a specified table
+  const addItem = async (table: string, item: Record<string, any>) => {
+    const { data, error } = await supabase.from(table).insert([item]);
+    if (error) {
+      throw error;
+    }
+    return data;
+  };
+
+  return {
+    supabase,
+    addItem,
+  };
+};
