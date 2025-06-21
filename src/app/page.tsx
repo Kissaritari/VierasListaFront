@@ -42,8 +42,12 @@ export default function Home() {
       setName("");
       setCount(0);
       setDietary("");
-    } catch (err: any) {
-      setError(err.message || "Virhe tallennuksessa");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Virhe tallennuksessa");
+      }
     } finally {
       setLoading(false);
     }
