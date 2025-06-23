@@ -1,13 +1,11 @@
 import React from "react";
 
 interface TaskbarProps {
-  windowMinimized: boolean;
   onRestore: () => void;
   windowVisible?: boolean;
 }
 
 const Taskbar: React.FC<TaskbarProps> = ({
-  windowMinimized,
   onRestore,
   windowVisible,
 }) => (

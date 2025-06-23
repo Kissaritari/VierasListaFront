@@ -115,7 +115,7 @@ function HomeContent() {
           )}
         </Window>
       </div>}
-      <Taskbar windowMinimized={windowMinimized} windowVisible={windowVisible} onRestore={() => setWindowMinimized(false)} />
+      <Taskbar windowVisible={windowVisible} onRestore={() => setWindowMinimized(false)} />
     </div>
   );
 }
